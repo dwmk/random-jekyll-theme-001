@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site.name }} (@{{ site.handle | remove: '@' }})</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Chirp:wght@400;500;600;700&amp;display=swap');
+        
+        :root {
+            --discord-bg: #36393f;
+            --discord-surface: #2f3136;
+            --discord-text: #dcddde;
+            --discord-muted: #949ba4;
+            --discord-accent: #5865f2;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .twitter-font {
+            font-family: 'Chirp', system_ui, sans-serif;
+        }
+        
+        .tweet {
+            transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .tweet:hover {
+            background-color: #292b2f;
+        }
+        
+        .tweet {
+            animation: fadeInUp 0.4s backwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .action-btn {
+            transition: all 0.15s ease;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .verified-badge {
+            animation: verifiedPop 0.6s ease;
+        }
+        
+        @keyframes verifiedPop {
+            0% { transform: scale(0.5); }
+            60% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .banner {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('{{ site.banner_url }}');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-[#36393f] text-[#dcddde] min-h-screen pb-12">
+    <div class="max-w-[600px] mx-auto">
+        <!-- Twitter-style top bar -->
+        <div class="sticky top-0 z-50 bg-[#36393f]/95 backdrop-blur-md border-b border-[#202225] px-4 py-3 flex items-center gap-6">
+            <button onclick="history.back()" class="p-2 hover:bg-[#5865f2]/10 rounded-full transition">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <div>
+                <div class="font-bold text-xl twitter-font">{{ site.name }}</div>
+                <div class="text-xs text-[#949ba4]">1.2K posts</div>
+            </div>
+        </div>
+
+        <!-- Banner + Profile header -->
+        <div class="relative">
+            <!-- Banner -->
+            <div class="h-48 banner rounded-b-3xl"></div>
+            
+            <!-- Avatar -->
+            <div class="absolute -bottom-12 left-4 border-[6px] border-[#36393f] rounded-full overflow-hidden shadow-2xl">
+                <img src="{{ site.avatar_url }}" 
+                     alt="Avatar" 
+                     class="w-24 h-24 object-cover rounded-full">
+            </div>
+            
+            <!-- Edit / Follow button -->
+            <div class="absolute top-4 right-4">
+                <button onclick="alert('Edit profile clicked (demo)')" 
+                        class="px-5 py-1.5 bg-white text-black font-bold rounded-full hover:bg-[#dcddde] transition-all active:scale-95">
+                    Edit profile
+                </button>
+            </div>
+        </div>
+
+        <!-- Profile info -->
+        <div class="pt-16 px-4 pb-3">
+            <div class="flex items-center gap-2">
+                <h1 class="text-2xl font-bold twitter-font">{{ site.name }}</h1>
+                <i data-lucide="badge-check" 
+                   class="w-6 h-6 text-[#5865f2] verified-badge"></i>
+            </div>
+            <div class="text-[#949ba4] text-lg">{{ site.handle }}</div>
+            
+            <p class="mt-3 text-[#dcddde] leading-relaxed">{{ site.bio }}</p>
+            
+            <div class="flex items-center gap-2 mt-3 text-[#949ba4]">
+                <i data-lucide="calendar" class="w-4 h-4"></i>
+                <span>Joined {{ site.joined }}</span>
+            </div>
+            
+            <div class="flex gap-5 mt-4 text-sm">
+                <div>
+                    <span class="font-bold text-white">{{ site.following }}</span>
+                    <span class="text-[#949ba4]"> Following</span>
+                </div>
+                <div>
+                    <span class="font-bold text-white">{{ site.followers }}</span>
+                    <span class="text-[#949ba4]"> Followers</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex border-b border-[#202225]">
+            <div class="flex-1 py-4 text-center font-bold border-b-4 border-[#5865f2] text-[#5865f2] twitter-font">Posts</div>
+            <div class="flex-1 py-4 text-center text-[#949ba4] hover:bg-[#292b2f] transition">Replies</div>
+            <div class="flex-1 py-4 text-center text-[#949ba4] hover:bg-[#292b2f] transition">Highlights</div>
+            <div class="flex-1 py-4 text-center text-[#949ba4] hover:bg-[#292b2f] transition">Media</div>
+            <div class="flex-1 py-4 text-center text-[#949ba4] hover:bg-[#292b2f] transition">Likes</div>
+        </div>
+
+        <!-- Compose box (Twitter style) -->
+        <div class="border-b border-[#202225] px-4 py-4 flex gap-4 hover:bg-[#292b2f] transition">
+            <img src="{{ site.avatar_url }}" 
+                 class="w-10 h-10 rounded-full flex-shrink-0 mt-1">
+            <div class="flex-1">
+                <textarea id="compose" 
+                          rows="2"
+                          class="w-full bg-transparent outline-none resize-none text-lg placeholder-[#949ba4]"
+                          placeholder="What's happening?"></textarea>
+                
+                <div class="flex justify-between items-center mt-3">
+                    <div class="flex gap-6 text-[#5865f2]">
+                        <i data-lucide="image" class="w-5 h-5 cursor-pointer hover:scale-110 transition"></i>
+                        <i data-lucide="smile" class="w-5 h-5 cursor-pointer hover:scale-110 transition"></i>
+                    </div>
+                    <button onclick="fakePost()" 
+                            class="bg-[#5865f2] hover:bg-[#4752c4] px-6 py-1 rounded-full font-bold text-sm transition">
+                        Post
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- POST FEED (Jekyll powered) -->
+        {% for post in site.posts %}
+        <article class="tweet border-b border-[#202225] px-4 py-4 flex gap-4 cursor-pointer" 
+                 onclick="window.location='{{ post.url }}'">
+            
+            <!-- Avatar -->
+            <img src="{{ site.avatar_url }}" 
+                 class="w-10 h-10 rounded-full flex-shrink-0">
+            
+            <div class="flex-1 min-w-0">
+                <!-- Header -->
+                <div class="flex items-center gap-1 flex-wrap">
+                    <span class="font-bold twitter-font">{{ site.name }}</span>
+                    <i data-lucide="badge-check" class="w-4 h-4 text-[#5865f2]"></i>
+                    <span class="text-[#949ba4]">{{ site.handle }}</span>
+                    <span class="text-[#949ba4] mx-1">·</span>
+                    <span class="text-[#949ba4] time-ago text-sm" 
+                          data-date="{{ post.date | date: '%Y-%m-%dT%H:%M:%SZ' }}">
+                        {{ post.date | date: '%b %d' }}
+                    </span>
+                </div>
+                
+                <!-- Tweet content -->
+                <div class="mt-1 text-[#dcddde] leading-relaxed prose prose-invert max-w-none">
+                    {{ post.content | markdownify }}
+                </div>
+                
+                <!-- Action bar -->
+                <div class="flex justify-between mt-4 max-w-md text-[#949ba4]">
+                    
+                    <!-- Reply -->
+                    <button onclick="event.stopImmediatePropagation(); this.querySelector('span').textContent = parseInt(this.querySelector('span').textContent)+1" 
+                            class="action-btn flex items-center gap-2 hover:text-[#5865f2] group">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        <span class="text-xs font-medium group-active:scale-110">12</span>
+                    </button>
+                    
+                    <!-- Repost -->
+                    <button onclick="event.stopImmediatePropagation(); this.classList.toggle('text-green-400')" 
+                            class="action-btn flex items-center gap-2 hover:text-green-400 group">
+                        <i data-lucide="repeat" class="w-5 h-5"></i>
+                        <span class="text-xs font-medium group-active:scale-110">47</span>
+                    </button>
+                    
+                    <!-- Like -->
+                    <button onclick="event.stopImmediatePropagation(); likePost(this)" 
+                            class="like-btn action-btn flex items-center gap-2 hover:text-red-500 group" data-liked="false">
+                        <i data-lucide="heart" class="w-5 h-5"></i>
+                        <span class="like-count text-xs font-medium group-active:scale-110">231</span>
+                    </button>
+                    
+                    <!-- View -->
+                    <button onclick="event.stopImmediatePropagation()" 
+                            class="action-btn flex items-center gap-2 hover:text-[#5865f2] group">
+                        <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                        <span class="text-xs font-medium">4.2K</span>
+                    </button>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+
+        <!-- Footer note -->
+        <div class="text-center py-8 text-[#949ba4] text-xs">
+            Made with ❤️ using Jekyll + Tailwind + Lucide • Discord × Twitter aesthetic
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script run
+        function initializeTailwind() {
+            // CDN handles classes automatically
+        }
+
+        // Relative time updater
+        function updateRelativeTimes() {
+            const now = new Date();
+            document.querySelectorAll('.time-ago').forEach(el => {
+                const postDate = new Date(el.dataset.date);
+                let diff = Math.floor((now - postDate) / 1000);
+                
+                if (diff < 60) el.textContent = diff + 's';
+                else if (diff < 3600) el.textContent = Math.floor(diff / 60) + 'm';
+                else if (diff < 86400) el.textContent = Math.floor(diff / 3600) + 'h';
+                else el.textContent = Math.floor(diff / 86400) + 'd';
+            });
+        }
+
+        // Like button with animation
+        function likePost(btn) {
+            event.stopImmediatePropagation();
+            const countEl = btn.querySelector('.like-count');
+            let count = parseInt(countEl.textContent);
+            
+            if (btn.dataset.liked === "false") {
+                count++;
+                countEl.textContent = count;
+                btn.classList.add('text-red-500');
+                const heart = btn.querySelector('[data-lucide="heart"]');
+                heart.style.transform = 'scale(1.4)';
+                setTimeout(() => heart.style.transform = 'scale(1)', 180);
+                btn.dataset.liked = "true";
+            } else {
+                count--;
+                countEl.textContent = count;
+                btn.classList.remove('text-red-500');
+                btn.dataset.liked = "false";
+            }
+        }
+
+        // Fake post demo
+        function fakePost() {
+            const textarea = document.getElementById('compose');
+            if (textarea.value.trim()) {
+                alert('Posted! (this is a static demo — real posts come from your _posts folder)');
+                textarea.value = '';
+            }
+        }
+
+        // Initialize everything
+        window.onload = function() {
+            // Tailwind ready
+            initializeTailwind();
+            
+            // Render Lucide icons
+            lucide.createIcons();
+            
+            // Update relative times
+            updateRelativeTimes();
+            
+            // Re-run times every 30s (live feel)
+            setInterval(updateRelativeTimes, 30000);
+            
+            // Keyboard shortcut demo (Ctrl/Cmd + K to focus compose)
+            document.addEventListener('keydown', e => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('compose').focus();
+                }
+            });
+            
+            console.log('%c✅ Discord × Twitter Jekyll theme loaded successfully!', 'color:#5865f2; font-weight:bold');
+        };
+    </script>
+</body>
+</html>
