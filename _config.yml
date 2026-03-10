@@ -1,0 +1,9 @@
+# _config.yml
+name: "Your Name"
+handle: "@yourhandle"
+bio: "Living the Discord × Twitter dream • This Jekyll site is a 1:1 profile feed clone with smooth animations, hover effects, verified badges, and real Jekyll posts."
+avatar_url: "https://i.pravatar.cc/300?u=discordtwit"
+banner_url: "https://picsum.photos/id/1015/1500/500"
+joined: "March 2024"
+following: "420"
+followers: "69K"
